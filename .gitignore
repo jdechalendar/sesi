@@ -1,0 +1,20 @@
+*.jl.cov
+*.jl.*.cov
+*.jl.mem
+deps/deps.jl
+*.DS_Store
+*.swp
+
+*jl_out*
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter notebooks
+*.ipynb_checkpoints/
+
+# Figures
+*.eps
+*.png

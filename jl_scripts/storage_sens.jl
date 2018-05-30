@@ -80,7 +80,7 @@ for (icold, cold) in enumerate(cold_lst)
         nChiller += 1.
     end
     if save
-        Sesi.save_data_new(sesi, f, p, folderOut * sc[1:end-4] * "_"
+        Sesi.save_data(sesi, f, p, folderOut * sc[1:end-4] * "_"
             * string(carbonPrice))
     end
 end

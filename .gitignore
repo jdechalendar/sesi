@@ -1,3 +1,6 @@
+py_notebooks/figures
+py_notebooks/archive
+
 *.jl.cov
 *.jl.*.cov
 *.jl.mem

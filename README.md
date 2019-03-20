@@ -1,9 +1,9 @@
 # Supplemental code and data for City-scale decarbonization experiments with integrated energy systems
 This repository contains supplementary code and data for "City-scale decarbonization experiments with integrated energy systems", by J.A. de Chalendar, P.W. Glynn, and S.M. Benson:
-* The `Sesi.jl` module
-* The `data` folder contains all necessary data, and outputs will be generated here by default
+* The `data` folder contains all necessary data inputs and outputs. Outputs will be generated here by default if the code is rerun.
+* The `py_notebooks` folder contains jupyter notebooks that can be used to regenerate the figures in the paper.
+* The `Sesi.jl` module that contains the main optimization code.
 * The `jl_scripts` folder contains julia scripts that can be used to regenerate the results in
-* The `py_notebooks` folder contains jupyter notebooks that can be used to regenerate the figures in
 
 ## Installation instructions
 The optimization model was implemented in the [Julia](https://julialang.org) programming language (Julia v0.6.4 was used) using the [JuMP](https://github.com/JuliaOpt/JuMP.jl) package and solved using [Gurobi](https://gurobi.com), a commercial solver (another solver can be used, cf. the JuMP documentation for how to do that). Data pre- and post-processing was done using [Python](https://python.org). The `jl_scripts/setup.jl` file gives the Julia requirements and the file `py_notebook/requirements.txt` gives the Python requirements (Python 3.5 was used).

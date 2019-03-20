@@ -1,4 +1,4 @@
-# NE - Run thermal sensitivity cases
+# NE - Run thermal storage sensitivity cases
 push!(LOAD_PATH, joinpath(ENV["REPO_PATH"], "Sesi.jl/src"))
 
 using CSV
@@ -11,7 +11,7 @@ import Sesi # import vs using so I can reload this from the REPL
 
 reload("Sesi")
 
-include("ne_utils.jl")
+include("utils.jl")
 
 save = false
 verb = true
@@ -92,7 +92,7 @@ end
 
 if save
     json_data = json(results);
-    open(folderOut * "ne_storage_sens_json_data", "w") do fw
+    open(folderOut * "storage_sens_json_data", "w") do fw
         write(fw, json_data)
     end
 end

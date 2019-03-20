@@ -11,7 +11,7 @@ import Sesi # import vs using so I can reload this from the REPL
 
 reload("Sesi")
 
-include("ne_utils.jl")
+include("utils.jl")
 
 save = false
 verb = true

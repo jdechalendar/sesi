@@ -22,22 +22,23 @@ if verb
     println(repeat("#",80))
 end
 
-folderIn = joinpath(ENV["REPO_PATH"], "data/jl_in/")
-folderOut = joinpath(ENV["REPO_PATH"], "data/jl_out/")
+folderIn = joinpath(ENV["REPO_PATH"], "dataR1/jl_in/")
 
 results = Dict()
 prices = Dict()
 costs = Dict()
 reductions = Dict()
+#fileNms = ["jlInput_x0.csv","jlInput_2018.csv", "jlInput_x2.csv"]
 fileNms = ["jlInput_x0.csv", "jlInput_x1.csv", "jlInput_x2.csv",
-    "jlInput_x4.csv","jlInput_x6.csv"]
+            "jlInput_x4.csv","jlInput_x6.csv", "jlInput_2018.csv"]
 
 for dc_ratio in [1., 0.5, 0.1]
 if verb
 println("Dealing with demand ratio " * string(dc_ratio))
 end
 
-folderOut = ENV["REPO_PATH"] * "jl_out/demand_" * string(dc_ratio) * "/"
+folderOut = joinpath(ENV["REPO_PATH"],
+                     "dataR1/jl_out/demand_" * string(dc_ratio))
 
 for sc in fileNms
     prices[sc] = []

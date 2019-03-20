@@ -1,8 +1,4 @@
-# Note: in the future, these functions will check that the appropriate fields
-# are defined in the parameter dictionary, but there will no longer be default
-# values, to make sure the user is supplying them.
-
-# At present, all numerical values should be here. No hard-coded values
+# All numerical values should be here. No hard-coded values
 # elsewhere in the Sesi module
 
 # The design_ functions create the parameter dictionary. This contains

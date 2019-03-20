@@ -182,7 +182,7 @@ function model_water_switching!(sesi::JuMP.Model, f::Dict, p::Dict)
          end
      end
 
-    # other options listed below
+    # other options that were explored listed below
 
   #  @constraints sesi begin
   #      [t=1:T-2], swHRC[t] >= sesi[:eHRC][t] - sesi[:eHRC][t+1]

@@ -1,4 +1,7 @@
-# NE - Run thermal storage sensitivity cases
+# Run thermal storage sensitivity cases
+# Note: the penalty for unmet loads should be L1 and not L2 for this file to produce expected results.
+# An L1 norm will cause the algorithm to detect unfeasibility faster (because the unmet loads will all be on the same hour).
+
 push!(LOAD_PATH, joinpath(ENV["REPO_PATH"], "Sesi.jl/src"))
 
 using CSV

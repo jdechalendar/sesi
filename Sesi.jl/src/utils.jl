@@ -214,10 +214,13 @@ function campus_bill(sesi::JuMP.Model, f::Dict, p::Dict; verb::Int=0)
         + sum(gGrid .* f[:gasPrice]));
 
     # unmet loads
-    bill["umLoads"] = p[:umHot]*umHot'umHot+p[:umCold]*umCold'umCold
+    if p[:umLoadsL2]
+        bill["umLoads"] = p[:umHot]*umHot'umHot+p[:umCold]*umCold'umCold
+    else
+        bill["umLoads"] = p[:umHot] * sum(umHot) + p[:umCold] * sum(umCold)
+    end
+    
     bill["objective"] += bill["umLoads"]
-
-
 
     # sanity
     if abs(bill["objective"]-getvalue(getobjective(sesi)))>1e-3
@@ -244,8 +247,13 @@ function campus_bill(sesi::JuMP.Model, f::Dict, p::Dict; verb::Int=0)
             cbp_unmet = sum(getvalue(sesi[:cbp_unmet]))*p[:cbp_unmet_penalty]
         end
 
-        umLoads = (p[:umHot]*getvalue(sesi[:umHot])'getvalue(sesi[:umHot])
-            +p[:umCold]*getvalue(sesi[:umCold])'getvalue(sesi[:umCold]))
+        if p[:umLoadsL2]
+            umLoads = (p[:umHot]*getvalue(sesi[:umHot])'getvalue(sesi[:umHot])
+                       +p[:umCold]*getvalue(sesi[:umCold])'getvalue(sesi[:umCold]))
+       else
+            umLoads = (p[:umHot] * sum(getvalue(sesi[:umHot]))
+                       + p[:umCold] * sum(getvalue(sesi[:umCold])))
+        end
         obj = sw + dc + carbon + energy + cbp + cbp_unmet + umLoads
 
         println("Switching")

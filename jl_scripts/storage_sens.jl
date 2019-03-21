@@ -16,7 +16,7 @@ reload("Sesi")
 
 include("jl_utils.jl")
 
-save = false
+save = true
 verb = true
 
 if verb
@@ -32,8 +32,8 @@ results = Dict()
 fileNm = folderIn * "jlInput_x0.csv"
 
 # Increase resolution as needed here
-hot_lst=linspace(0., 1100., 2)
-cold_lst=linspace(0., 120.e3, 3)
+hot_lst=linspace(0., 1100., 30)
+cold_lst=linspace(0., 120.e3, 30)
 
 results["hot_lst"] = hot_lst
 results["cold_lst"] = cold_lst
@@ -51,14 +51,14 @@ for (ihot, hot) in enumerate(hot_lst)
 for (icold, cold) in enumerate(cold_lst)
     nChiller = 4.
     umCost = 1e7
-    while umCost > 1e-5
+    while umCost > 1e-2
         if verb
             @printf("hot: %.1f mmbtu - cold: %.1f tons - chillers %.0f\n", hot,
                 cold, nChiller)
         end
         sesi, p, f = build_model(fileNm; verb=false, startDate=Date(2016,1,1),
             endDate=Date(2016,12,31), hot_storage=hot, cold_storage=cold,
-            nChiller=nChiller)
+            nChiller=nChiller, umLoadsL2=false)
         status = solve(sesi)
 
         if status == :Optimal
@@ -74,6 +74,7 @@ for (icold, cold) in enumerate(cold_lst)
                 results["umCold"][ihot,icold] = sum(getvalue(sesi[:umCold]))
             end
             umCost = bill["umLoads"]
+            @printf("unmet Load Cost: %.6f\n", umCost)
         else
             warn("Unknown status!")
             println(hot)
@@ -82,15 +83,7 @@ for (icold, cold) in enumerate(cold_lst)
 
         nChiller += 1.
     end
-    if save
-        Sesi.save_data(sesi, f, p, folderOut * sc[1:end-4] * "_"
-            * string(carbonPrice))
-    end
 end
-end
-
-if verb
-    print(results)
 end
 
 if save

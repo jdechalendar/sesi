@@ -150,12 +150,13 @@ function model_water!(sesi::JuMP.Model, f::Dict, p::Dict)
         end
     end
 
-
-    # norm 2 makes more sense
-    @objective(sesi, Min, getobjective(sesi) + p[:umHot] * umHot'umHot
-        + p[:umCold] * umCold'umCold)
-    # @objective(sesi, Min, getobjective(sesi) + p[:umHot] * sum(umHot)
-    #     + p[:umCold] * sum(umCold))
+    if p[:umLoadsL2]  # use L2 penalty
+        @objective(sesi, Min, getobjective(sesi) + p[:umHot] * umHot'umHot
+            + p[:umCold] * umCold'umCold)
+    else  # use L1 penalty
+        @objective(sesi, Min, getobjective(sesi) + p[:umHot] * sum(umHot)
+            + p[:umCold] * sum(umCold))
+    end
 
     return sesi
 end
@@ -181,48 +182,6 @@ function model_water_switching!(sesi::JuMP.Model, f::Dict, p::Dict)
              swChiller[t] >= sesi[:eChiller][t+1] - sesi[:eChiller][t]
          end
      end
-
-    # other options that were explored listed below
-
-  #  @constraints sesi begin
-  #      [t=1:T-2], swHRC[t] >= sesi[:eHRC][t] - sesi[:eHRC][t+1]
-  #      [t=1:T-2], swHRC[t] >= sesi[:eHRC][t+1] - sesi[:eHRC][t]
-  #      [t=1:T-2], swHeater[t] >= sesi[:eHeater][t] - sesi[:eHeater][t+1]
-  #      [t=1:T-2], swHeater[t] >= sesi[:eHeater][t+1] - sesi[:eHeater][t]
-  #      [t=1:T-2], swChiller[t] >= sesi[:eChiller][t] - sesi[:eChiller][t+1]
-  #      [t=1:T-2], swChiller[t] >= sesi[:eChiller][t+1] - sesi[:eChiller][t]
-  #  end
-
-    # for t=1:T-2
-    #     @constraint(sesi, swHRC[t] >= sesi[:eHRC][t] - sesi[:eHRC][t+1])
-    #     @constraint(sesi, swHRC[t] >= sesi[:eHRC][t+1] - sesi[:eHRC][t])
-    #     @constraint(sesi, swHeater[t] >= sesi[:eHeater][t] - sesi[:eHeater][t+1])
-    #     @constraint(sesi, swHeater[t] >= sesi[:eHeater][t+1] - sesi[:eHeater][t])
-    #     @constraint(sesi, swChiller[t] >= sesi[:eChiller][t] - sesi[:eChiller][t+1])
-    #     @constraint(sesi, swChiller[t] >= sesi[:eChiller][t+1] - sesi[:eChiller][t])
-    # end
-
-    # for t=1:T-2
-    #     @constraint(sesi, swHRC[t] >= sesi[:eHRC][t] - sesi[:eHRC][t+1])
-    # end
-    # for t=1:T-2
-    #     @constraint(sesi, swHRC[t] >= sesi[:eHRC][t+1] - sesi[:eHRC][t])
-    # end
-    # for t=1:T-2
-    #     @constraint(sesi, swHeater[t] >= sesi[:eHeater][t] - sesi[:eHeater][t+1])
-    # end
-    # for t=1:T-2
-    #     @constraint(sesi, swHeater[t] >= sesi[:eHeater][t+1] - sesi[:eHeater][t])
-    # end
-    # for t=1:T-2
-    #     @constraint(sesi, swChiller[t] >= sesi[:eChiller][t] - sesi[:eChiller][t+1])
-    # end
-    # for t=1:T-2
-    #     @constraint(sesi, swChiller[t] >= sesi[:eChiller][t+1] - sesi[:eChiller][t])
-    # end
-
-    # @objective(sesi, Min, getobjective(sesi) + sum(p[:swPenalty] *
-    #     (swHRC[t] + swChiller[t] + swHeater[t]) for t = 1:T-2))
 
     # norm 2 penalty makes more sense
     @objective(sesi, Min, getobjective(sesi) + p[:swPenalty] * (swHRC'swHRC +

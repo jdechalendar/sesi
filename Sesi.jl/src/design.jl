@@ -15,6 +15,7 @@ function design_base!()
     p[:cap_thstorage] = false
     p[:cap_machines] = false
     p[:ev] = false
+    p[:umLoadsL2] = true # set this to false to use L1 norm instead for unmet loads
 
     return p
 end

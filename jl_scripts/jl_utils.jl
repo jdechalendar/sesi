@@ -6,7 +6,8 @@ function build_model(fileNm::String; startT::Int=1, T::Int=-1, verb::Bool=true,
     carbonPrice::Float64=100., capCostTh::Bool=false, capCostMa::Bool=false,
     elecStorage::Bool=false, elec_storage::Float64=0.,nHRC::Float64=3.,
     nChiller::Float64=4., nHeater::Float64=3., dc_ratio::Float64=1.,
-    startDate::Date=Date(), endDate::Date=Date())
+    startDate::Date=Date(), endDate::Date=Date(),
+    umLoadsL2::Bool=true)
 
     if T != -1
         data = CSV.read(fileNm, datarow=1+startT, rows=T, allowmissing=:none)
@@ -25,6 +26,7 @@ function build_model(fileNm::String; startT::Int=1, T::Int=-1, verb::Bool=true,
     p[:HRCCAP] *= nHRC / 3.
     p[:chillerCAP] *= nChiller / 4.
     p[:heaterCAP] *= nHeater / 3.
+    p[:umLoadsL2] = umLoadsL2
 
     Sesi.design_prices!(p)
     p[:demandCharge] = Dict(k => v*dc_ratio for (k,v) in p[:demandCharge])

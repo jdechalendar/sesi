@@ -1,6 +1,6 @@
 # Supplemental code and data for City-scale decarbonization experiments with integrated energy systems
 This repository contains supplementary code and data for "City-scale decarbonization experiments with integrated energy systems", by J.A. de Chalendar, P.W. Glynn, and S.M. Benson:
-* The `data` folder contains all necessary data inputs and outputs. Outputs will be generated here by default if the code is rerun.
+* The `data` and `dataR1` folders contain all necessary data inputs and outputs. Outputs will be generated here by default if the code is rerun.
 * The `py_notebooks` folder contains jupyter notebooks that can be used to regenerate the figures in the paper.
 * The `Sesi.jl` module that contains the main optimization code.
 * The `jl_scripts` folder contains julia scripts that can be used to regenerate the results in
